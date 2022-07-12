@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using FinancialChat.Domain.Entities;
 
 namespace FinancialChat.Infrastructure.Persistence;
 
@@ -26,7 +27,10 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
         _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
-    // Add DbSet Entities
+    public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>();
+    public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
+    public DbSet<ChatRoomUser> ChatRoomUsers => Set<ChatRoomUser>();
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

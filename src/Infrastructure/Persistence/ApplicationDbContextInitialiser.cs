@@ -1,4 +1,5 @@
-﻿using FinancialChat.Infrastructure.Identity;
+﻿using FinancialChat.Domain.Entities;
+using FinancialChat.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -66,6 +67,21 @@ public class ApplicationDbContextInitialiser
         {
             await _userManager.CreateAsync(administrator, "Administrator1!");
             await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+        }
+
+
+        // Default data
+        // Seed, if necessary
+        if (!_context.ChatRooms.Any())
+        {
+            _context.ChatRooms.Add(new ChatRoom
+            {
+                Name = "DefaultRoom",
+                Code = "default",
+                Global = true
+            });
+
+            await _context.SaveChangesAsync();
         }
     }
 }

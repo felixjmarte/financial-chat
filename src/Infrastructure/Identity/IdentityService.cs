@@ -1,5 +1,7 @@
 ﻿using FinancialChat.Application.Common.Interfaces;
 using FinancialChat.Application.Common.Models;
+using FinancialChat.Domain.Entities;
+using FinancialChat.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -11,15 +13,18 @@ public class IdentityService : IIdentityService
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
     private readonly IAuthorizationService _authorizationService;
+    private readonly ApplicationDbContext _applicationDbContext;
 
     public IdentityService(
         UserManager<ApplicationUser> userManager,
         IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService)
+        IAuthorizationService authorizationService,
+        ApplicationDbContext applicationDbContext)
     {
         _userManager = userManager;
         _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
         _authorizationService = authorizationService;
+        _applicationDbContext = applicationDbContext;
     }
 
     public async Task<string> GetUserNameAsync(string userId)
