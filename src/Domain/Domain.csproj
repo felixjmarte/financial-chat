@@ -14,8 +14,11 @@
 
     <ItemGroup>
       <None Remove="Entities\" />
+      <None Remove="Events\" />
+      <None Remove="Events\ChatMessage\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Entities\" />
+      <Folder Include="Events\" />
     </ItemGroup>
 </Project>

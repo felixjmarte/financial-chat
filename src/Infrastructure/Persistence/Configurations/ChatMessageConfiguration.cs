@@ -11,5 +11,10 @@ public class ChatMessageConfiguration : IEntityTypeConfiguration<ChatMessage>
     {
         builder.Property(t => t.Message)
             .IsRequired();
+
+        builder.HasOne<ApplicationUser>()
+          .WithMany()
+          .HasForeignKey(t => t.UserId)
+          .IsRequired();
     }
 }

@@ -19,4 +19,21 @@
         <ProjectReference Include="..\Domain\Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="ChatRoom\" />
+      <None Remove="ChatMessage\" />
+      <None Remove="ChatRoom\Queries\" />
+      <None Remove="ChatRoom\Commands\" />
+      <None Remove="ChatRoom\Queries\GetChatRooms\" />
+      <None Remove="ChatMessages\Commands\" />
+      <None Remove="ChatMessages\Commands\SendMessage\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="ChatRooms\" />
+      <Folder Include="ChatMessages\" />
+      <Folder Include="ChatRooms\Queries\" />
+      <Folder Include="ChatRooms\Queries\GetChatRooms\" />
+      <Folder Include="ChatMessages\Commands\" />
+      <Folder Include="ChatMessages\Commands\SendChatMessage\" />
+    </ItemGroup>
 </Project>
