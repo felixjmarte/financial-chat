@@ -317,6 +317,7 @@ export interface IChatRoomsVm {
 export class ChatMessageDto implements IChatMessageDto {
     id?: number;
     message?: string | undefined;
+    userId?: string | undefined;
     created?: Date;
     createdBy?: string | undefined;
 
@@ -333,6 +334,7 @@ export class ChatMessageDto implements IChatMessageDto {
         if (_data) {
             this.id = _data["id"];
             this.message = _data["message"];
+            this.userId = _data["userId"];
             this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
             this.createdBy = _data["createdBy"];
         }
@@ -349,6 +351,7 @@ export class ChatMessageDto implements IChatMessageDto {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["message"] = this.message;
+        data["userId"] = this.userId;
         data["created"] = this.created ? this.created.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
         return data;
@@ -358,6 +361,7 @@ export class ChatMessageDto implements IChatMessageDto {
 export interface IChatMessageDto {
     id?: number;
     message?: string | undefined;
+    userId?: string | undefined;
     created?: Date;
     createdBy?: string | undefined;
 }

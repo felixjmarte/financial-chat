@@ -13,7 +13,9 @@ const PROXY_CONFIG = [
       "/ApplyDatabaseMigrations",
       "/_framework",
       "/api",
-      "/favicon.ico"
+      "/favicon.ico",
+      "ChatRooms",
+      "ChatMessages"
    ],
     target: target,
     secure: false,

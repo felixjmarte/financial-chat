@@ -22,7 +22,7 @@ export const LoginActions = {
 };
 
 let applicationPaths: ApplicationPathsType = {
-  DefaultLoginRedirectPath: '/',
+  DefaultLoginRedirectPath: '/chat',
   ApiAuthorizationClientConfigurationUrl: `_configuration/${ApplicationName}`,
   Login: `authentication/${LoginActions.Login}`,
   LoginFailed: `authentication/${LoginActions.LoginFailed}`,
@@ -40,6 +40,7 @@ let applicationPaths: ApplicationPathsType = {
   LogOutPathComponents: [],
   LoggedOutPathComponents: [],
   LogOutCallbackPathComponents: [],
+  IdentityLoginPath: 'Identity/Account/Login',
   IdentityRegisterPath: 'Identity/Account/Register',
   IdentityManagePath: 'Identity/Account/Manage'
 };
@@ -74,6 +75,7 @@ interface ApplicationPathsType {
   readonly LogOutPathComponents: string [];
   readonly LoggedOutPathComponents: string [];
   readonly LogOutCallbackPathComponents: string [];
+  readonly IdentityLoginPath: string;
   readonly IdentityRegisterPath: string;
   readonly IdentityManagePath: string;
 }

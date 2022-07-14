@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialChat.WebUI.Controllers;
 
+[Authorize]
 public class ChatMessagesController : ApiControllerBase
 {
     [HttpPost("[action]")]

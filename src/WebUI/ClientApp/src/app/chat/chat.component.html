@@ -1,0 +1,73 @@
+<div class="container">
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="channel_heading">
+                        <h4>Chat Rooms</h4>
+                    </div>
+                </div>
+                <div class="inbox_chat">
+                    <div class="channels" *ngFor="let room of roomList">
+                        <div class="chat_list">
+                            <div class="chat_people" (click)="setRoom(room)">
+                                <div class="chat_ib">
+                                    <h5>
+                                        {{ room.name }}
+                                    </h5>
+                                    <p>
+                                        {{
+                                        room.messages.length &&
+                                        room.messages[room.messages.length - 1].message }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="currentRoom" class="mesgs">
+                <div class="msg_header">
+                    <p class="text-right text-muted">{{currentRoom.name}}</p>
+                </div>
+                <div class="msg_history">
+                    <li class="message" *ngFor="let message of currentRoom.messages">
+                        <div *ngIf="
+                          message.userId !== currentUser?.sub;
+                          then incoming_msg;
+                          else outgoing_msg
+                        "></div>
+                        <ng-template #incoming_msg>
+                            <div class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
+                                        <p>{{ message.message }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #outgoing_msg>
+                            <div class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>{{ message.message }}</p>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                </div>
+                <div class="type_msg">
+                    <form class="input_msg_write" (ngSubmit)="sendMessage()">
+                        <input type="text"
+                               class="write_msg"
+                               placeholder="Type a message"
+                               name="newMessage"
+                               [(ngModel)]="newMessage" />
+                        <button class="msg_send_btn" type="button" (click)="sendMessage()">
+                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
