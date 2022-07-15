@@ -1,9 +1,10 @@
+using FinancialChat.Application.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddApplicationServices();
+builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
 
@@ -52,6 +53,12 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.MapFallbackToFile("index.html"); ;
+
+using (var scope = app.Services.CreateScope())
+{
+    var messageConsumer = scope.ServiceProvider.GetRequiredService<IMessageConsumer>();
+    messageConsumer.Init();
+}
 
 app.Run();
 

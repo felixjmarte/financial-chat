@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinancialChat.Infrastructure.Persistence.Configurations;
 
-public class ChatCommandConfiguration : IEntityTypeConfiguration<ChatMessage>
+public class ChatMessageConfiguration : IEntityTypeConfiguration<ChatCommand>
 {
-    public void Configure(EntityTypeBuilder<ChatMessage> builder)
+    public void Configure(EntityTypeBuilder<ChatCommand> builder)
     {
-        builder.Property(t => t.Message)
+        builder.Property(t => t.Name)
+            .IsRequired();
+
+        builder.Property(t => t.Param)
             .IsRequired();
 
         builder.HasOne<ApplicationUser>()

@@ -17,6 +17,7 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
 {
     private readonly IApplicationDbContext _context;
     private readonly ICurrentUserService _currentUserService;
+    
 
     public SendChatMessageCommandHandler(IApplicationDbContext context, ICurrentUserService currentUserService)
     {
@@ -26,6 +27,11 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
 
     public async Task<int> Handle(SendChatMessageCommand request, CancellationToken cancellationToken)
     {
+        if (string.IsNullOrEmpty(request.Message))
+        {
+            throw new ValidationException();
+        }
+
         var chatRoom = _context.ChatRooms.SingleOrDefault(s => s.Code!.ToLower() == request.ChatRoomCode);
 
         if (chatRoom == null)
@@ -33,19 +39,44 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
             throw new NotFoundException(nameof(ChatRoom), request.ChatRoomCode!);
         }
 
-        var message = new ChatMessage
+
+        var isCommand = request.Message.Split(' ').First().StartsWith("/stock=");
+
+        if (isCommand)
         {
-            ChatRoomId = chatRoom.Id,
-            Message = request.Message,
-            UserId = _currentUserService.UserId
-        };
+            var command = new ChatCommand
+            {
+                ChatRoom = chatRoom,
+                ChatRoomId = chatRoom.Id,
+                Name = request.Message.Split('=').First().Trim(),
+                Param = request.Message.Split('=').Last().Trim(),
+                UserId = _currentUserService.UserId,
+            };
 
-        message.AddDomainEvent(new ChatMessageSentEvent(message));
+            command.AddDomainEvent(new ChatCommandSentEvent(command));
 
-        _context.ChatMessages.Add(message);
+            _context.ChatCommands.Add(command);
 
-        await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-        return message.Id;
+            return 0;
+        }
+        else
+        {
+            var message = new ChatMessage
+            {
+                ChatRoomId = chatRoom.Id,
+                Message = request.Message,
+                UserId = _currentUserService.UserId
+            };
+
+            message.AddDomainEvent(new ChatMessageSentEvent(message));
+
+            _context.ChatMessages.Add(message);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return message.Id;
+        }
     }
 }

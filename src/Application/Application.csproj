@@ -13,6 +13,11 @@
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,6 +32,17 @@
       <None Remove="ChatRoom\Queries\GetChatRooms\" />
       <None Remove="ChatMessages\Commands\" />
       <None Remove="ChatMessages\Commands\SendMessage\" />
+      <None Remove="RabbitMQ.Client" />
+      <None Remove="RabbitMQ\" />
+      <None Remove="RabbitMQ\Producer\" />
+      <None Remove="RabbitMQ\Consumer\" />
+      <None Remove="Microsoft.Extensions.Configuration" />
+      <None Remove="Microsoft.Extensions.Options" />
+      <None Remove="Microsoft.Extensions.Options.ConfigurationExtensions" />
+      <None Remove="Newtonsoft.Json" />
+      <None Remove="ChatCommand\" />
+      <None Remove="ChatCommand\EventHandlers\" />
+      <None Remove="ChatMessages\EventHandlers\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ChatRooms\" />
@@ -35,5 +51,9 @@
       <Folder Include="ChatRooms\Queries\GetChatRooms\" />
       <Folder Include="ChatMessages\Commands\" />
       <Folder Include="ChatMessages\Commands\SendChatMessage\" />
+      <Folder Include="MessageBroker\" />
+      <Folder Include="ChatCommands\" />
+      <Folder Include="ChatCommands\EventHandlers\" />
+      <Folder Include="ChatMessages\EventHandlers\" />
     </ItemGroup>
 </Project>

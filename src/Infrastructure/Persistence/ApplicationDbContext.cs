@@ -29,6 +29,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>, 
 
     public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>();
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
+    public DbSet<ChatCommand> ChatCommands => Set<ChatCommand>();
     public DbSet<ChatRoomUser> ChatRoomUsers => Set<ChatRoomUser>();
 
 

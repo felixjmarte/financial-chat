@@ -34,6 +34,17 @@ public class IdentityService : IIdentityService
         return user.UserName;
     }
 
+    public async Task<string?> GetUserIdAsync(string userName, string password)
+    {
+        bool isValid = false;
+        var user = await _userManager.FindByNameAsync(userName);
+        if (user != null)
+        {
+            isValid = await _userManager.CheckPasswordAsync(user, password);
+        }
+        return isValid ? user?.Id : null!;
+    }
+
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
     {
         var user = new ApplicationUser

@@ -1,4 +1,5 @@
 ﻿using FinancialChat.Application.Common.Interfaces;
+using FinancialChat.Application.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 using FinancialChat.WebUI.Filters;
 using FinancialChat.WebUI.Services;

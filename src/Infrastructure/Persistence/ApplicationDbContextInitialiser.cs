@@ -13,7 +13,8 @@ public class ApplicationDbContextInitialiser
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+    public ApplicationDbContextInitialiser(ILogger<ApplicationDbContextInitialiser> logger, ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _logger = logger;
         _context = context;
@@ -60,13 +61,26 @@ public class ApplicationDbContextInitialiser
             await _roleManager.CreateAsync(administratorRole);
         }
 
-        // Default users
-        var administrator = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
-
-        if (_userManager.Users.All(u => u.UserName != administrator.UserName))
+        var botRole = new IdentityRole("Bot");
+        if (_roleManager.Roles.All(r => r.Name != botRole.Name))
         {
-            await _userManager.CreateAsync(administrator, "Administrator1!");
-            await _userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
+            await _roleManager.CreateAsync(botRole);
+        }
+
+
+        // Default users
+        var administratorUser = new ApplicationUser { UserName = "administrator@localhost", Email = "administrator@localhost" };
+        if (_userManager.Users.All(u => u.UserName != administratorUser.UserName))
+        {
+            await _userManager.CreateAsync(administratorUser, "Administrator#2022!");
+            await _userManager.AddToRolesAsync(administratorUser, new[] { administratorRole.Name });
+        }
+
+        var botUser = new ApplicationUser { UserName = "bot@localhost", Email = "bot@localhost" };
+        if (_userManager.Users.All(u => u.UserName != botUser.UserName))
+        {
+            await _userManager.CreateAsync(botUser, "Bot#2022!");
+            await _userManager.AddToRolesAsync(botUser, new[] { botRole.Name });
         }
 
 
