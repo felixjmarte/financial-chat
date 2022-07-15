@@ -103,7 +103,7 @@ public class RabbitMQWorker : BackgroundService
             {
                 queueMessage = Encoding.UTF8.GetString(eventArgs.Body.ToArray());
                 JObject queueObj = JObject.Parse(queueMessage);
-                ProcessCommand(queueObj);
+                await ProcessCommand(queueObj);
                 channel.BasicAck(eventArgs.DeliveryTag, false);
             }
             catch (RuntimeBinderException ex)

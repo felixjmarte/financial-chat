@@ -1,5 +1,6 @@
 using FinancialChat.Application.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
+using FinancialChat.WebUI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddWebUIServices();
+builder.Services.AddSignalR(options =>
+{
+    options.EnableDetailedErrors = true;
+});
 
 var app = builder.Build();
 
@@ -51,6 +56,7 @@ app.MapControllerRoute(
     pattern: "{controller}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+app.MapHub<ChatHub>("/chathub");
 
 app.MapFallbackToFile("index.html"); ;
 

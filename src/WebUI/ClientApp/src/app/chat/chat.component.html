@@ -17,8 +17,19 @@
                                     </h5>
                                     <p>
                                         {{
-                                        room.messages.length &&
-                                        room.messages[room.messages.length - 1].message }}
+                                        room.messages.length
+                                        ? room.messages[room.messages.length - 1].message
+                                        : ''
+                                        }}
+                                    </p>
+                                    <p class="text-muted text-right text-small">
+                                        <small>
+                                            {{
+                                        room.messages.length
+                                            ? room.messages[room.messages.length - 1].created.toLocaleString()
+                                            : ''
+                                            }}
+                                        </small>
                                     </p>
                                 </div>
                             </div>
@@ -42,6 +53,7 @@
                                 <div class="received_msg">
                                     <div class="received_withd_msg">
                                         <p>{{ message.message }}</p>
+                                        <p class="msg_timestamps text-muted">{{message.created.toLocaleString()}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -50,6 +62,7 @@
                             <div class="outgoing_msg">
                                 <div class="sent_msg">
                                     <p>{{ message.message }}</p>
+                                    <p class="msg_timestamps text-muted">Sent by: <b>me</b> at: {{message.created.toLocaleString()}}</p>
                                 </div>
                             </div>
                         </ng-template>

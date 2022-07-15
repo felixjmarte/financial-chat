@@ -1,4 +1,4 @@
-export const ApplicationName = 'FinancialChat.WebUI';
+export const ApplicationName = 'FinanChat';
 
 export const ReturnUrlType = 'returnUrl';
 

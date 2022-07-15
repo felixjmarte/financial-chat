@@ -37,6 +37,8 @@
     <ItemGroup>
       <None Remove="Microsoft.EntityFrameworkCore.Design" />
       <None Remove="ClientApp\src\app\chat\" />
+      <None Remove="Microsoft.AspNet.SignalR" />
+      <None Remove="Hubs\" />
     </ItemGroup>
     <ItemGroup>
         <!-- Don't publish the SPA source files, but do show them in the project files list -->
@@ -46,6 +48,7 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\src\app\chat\" />
+      <Folder Include="Hubs\" />
     </ItemGroup>
     <PropertyGroup>
         <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>

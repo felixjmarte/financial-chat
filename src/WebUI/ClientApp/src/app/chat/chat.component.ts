@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { AuthorizeService, IUser } from "../../api-authorization/authorize.service";
 import { Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import {
   ChatRoomsClient, ChatRoomsVm,
   ChatMessagesClient, ChatMessageDto, SendChatMessageCommand
 } from '../web-api-client';
+import { ChatService } from './chat.service'; 
 
 @Component({
   selector: 'app-home',
@@ -22,7 +23,10 @@ export class ChatComponent implements OnInit {
     private authorizeService: AuthorizeService,
     private roomsClient: ChatRoomsClient,
     private messagesClient: ChatMessagesClient,
-  ) { }
+    private chatService: ChatService,
+    private _ngZone: NgZone,
+  ) {
+  }
 
   ngOnInit(): void {
     this.authorizeService.getUser().subscribe(
@@ -30,11 +34,16 @@ export class ChatComponent implements OnInit {
         this.currentUser = result;
       }
     )
+    setInterval(() => this.getRooms(), 500);
+  }
+
+
+  getRooms() {
     this.roomsClient.get().subscribe(
       result => {
         result.forEach(r => {
           r.messages = this.orderByDateDesc(r.messages)
-          if (!this.currentRoom && r.code) {
+          if (!this.currentRoom || this.currentRoom.code == r.code) {
             this.currentRoom = r;
           }
         });
@@ -75,4 +84,12 @@ export class ChatComponent implements OnInit {
       console.log(err);
     }
   }
+
+  private subscribeToEvents(): void {
+    this.chatService.messageReceived.subscribe((message: ChatMessageDto) => {
+      this._ngZone.run(() => {
+        this.currentRoom.messages.push(message);
+      });
+    });
+  }  
 }

@@ -5,7 +5,7 @@ import { ChatComponent } from './chat/chat.component';
 import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', component: HomeComponent },
+  { path: '', redirectTo: '/chat', pathMatch: 'full' },
   { path: 'chat', component: ChatComponent, canActivate: [AuthorizeGuard] },
 ];
 

@@ -14,6 +14,7 @@ import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChatComponent } from './chat/chat.component';
+import { ChatService } from './chat/chat.service';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { ChatComponent } from './chat/chat.component';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    ChatComponent
+    ChatComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -33,7 +34,8 @@ import { ChatComponent } from './chat/chat.component';
     ModalModule.forRoot()
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    ChatService
   ],
   bootstrap: [AppComponent]
 })

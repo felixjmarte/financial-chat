@@ -14,8 +14,9 @@ const PROXY_CONFIG = [
       "/_framework",
       "/api",
       "/favicon.ico",
-      "ChatRooms",
-      "ChatMessages"
+      "/ChatRooms",
+      "/ChatMessages",
+      "/ChatHub",
    ],
     target: target,
     secure: false,

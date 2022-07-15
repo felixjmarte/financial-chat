@@ -84,7 +84,7 @@
 .chat_ib {
   float: left;
   padding: 0 0 0 15px;
-  width: 88%;
+  width: 100%;
 }
 
 .chat_people {
@@ -119,7 +119,7 @@
   width: 92%;
 }
 
-.received_withd_msg p {
+.received_withd_msg p:not(.msg_timestamps) {
   background: #ebebeb none repeat scroll 0 0;
   border-radius: 3px;
   color: #646464;
@@ -142,11 +142,11 @@
 
 .mesgs {
   float: left;
-  padding: 30px 15px 0 25px;
+  padding: 20px 15px 0 25px;
   width: 60%;
 }
 
-.sent_msg p {
+.sent_msg p:not(.msg_timestamps) {
   background: #05728f none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;
@@ -163,6 +163,15 @@
 .sent_msg {
   float: right;
   width: 46%;
+}
+
+.msg_timestamps {
+  font-size: 0.8em;
+}
+
+.sent_msg .msg_timestamps {
+  text-align: right;
+  
 }
 
 .input_msg_write input {
@@ -204,5 +213,4 @@
 
 .message {
   list-style-type: none;
-  margin-bottom: 10px;
 }
