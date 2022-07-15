@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Worker-09565FEC-AC51-4041-86B7-11B8102D196C</UserSecretsId>
+    <ServerGarbageCollection>true</ServerGarbageCollection>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="CsvHelper" Version="28.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="RabbitMQ.Client" />
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Microsoft.AspNetCore.Http.Extensions" />
+    <None Remove="Microsoft.Extensions.Http" />
+    <None Remove="CsvHelper" />
+  </ItemGroup>
+</Project>
