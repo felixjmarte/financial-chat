@@ -19,6 +19,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
         {
             var integrationConfig = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.tests.json")
                 .AddEnvironmentVariables()
                 .Build();
 
@@ -36,7 +37,7 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 .Remove<DbContextOptions<ApplicationDbContext>>()
                 .AddDbContext<ApplicationDbContext>((sp, options) =>
                 {
-                    var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+                    var connString = builder.Configuration.GetConnectionString(TestConnectionString);
                     options.UseSqlServer(connString,
                         builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName));
                 });

@@ -16,6 +16,7 @@
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
     <PackageReference Include="Respawn" Version="4.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,9 @@
     <None Remove="ChatMessages\" />
     <None Remove="ChatMessages\Commands\" />
     <None Remove="ChatMessages\Commands\SendChatMessage\" />
+    <None Remove="Microsoft.Extensions.Configuration.Json" />
+    <None Remove="appsettings.tests.json" />
+    <None Remove="appsettings.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ChatRooms\" />
@@ -40,5 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\WebUI\WebUI.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="CustomWebApplicationFactory.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="appsettings.tests.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>

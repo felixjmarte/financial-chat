@@ -16,6 +16,7 @@ namespace Application.IntegrationTests;
 [SetUpFixture]
 public partial class Testing
 {
+    public const string TestConnectionString = "Tests";
     private static WebApplicationFactory<Program> _factory = null!;
     private static IConfiguration _configuration = null!;
     private static IServiceScopeFactory _scopeFactory = null!;
@@ -26,8 +27,8 @@ public partial class Testing
     public void RunBeforeAnyTests()
     {
         _factory = new CustomWebApplicationFactory();
-        _configuration = _factory.Services.GetRequiredService<IConfiguration>();
         _scopeFactory = _factory.Services.GetRequiredService<IServiceScopeFactory>();
+        _configuration = _factory.Services.GetRequiredService<IConfiguration>();
 
         _checkpoint = new Checkpoint
         {
@@ -95,7 +96,7 @@ public partial class Testing
 
     public static async Task ResetState()
     {
-        await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+        await _checkpoint.Reset(_configuration.GetConnectionString(TestConnectionString));
 
         _currentUserId = null;
     }
