@@ -1,9 +1,7 @@
 # FinanChat
-## _The best stocks chat room_
-
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://github.com/felixjmarte/financial-chat/tree/main)
 
-FinanChat is a global chat room, built with dotNET and AngularJS powered.
+FinanChat is a chat room with an integrated stocks commands processor built with .NET and Angular 13.
 ***
 ## Purpose
 With this project, I aim to show up my technology skills, coding style and architecture design.
