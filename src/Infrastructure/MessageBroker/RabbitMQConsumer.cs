@@ -1,37 +1,34 @@
-﻿using System;
-using System.Diagnostics;
-using System.Text;
-using FinancialChat.Application.ChatMessages.Commands.SendChatMessages;
+﻿using System.Text;
 using FinancialChat.Application.Common.Exceptions;
 using FinancialChat.Application.Common.Interfaces;
-using FinancialChat.Domain.Entities;
 using FinancialChat.Domain.Events;
 using MediatR;
 using Microsoft.CSharp.RuntimeBinder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace FinancialChat.Application.MessageBroker
+namespace FinancialChat.Infrastructure.MessageBroker
 {
-    public sealed class RabbitMQConsumer : IMessageConsumer
+    public sealed class RabbitMQConsumer : IMessageBrokerConsumer
     {
         private readonly ILogger _logger;
         private readonly RabbitOptions _options;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public RabbitMQConsumer(IServiceScopeFactory serviceScopeFactory,  IOptions<RabbitOptions> options, ILogger<RabbitMQConsumer> logger)
+        public RabbitMQConsumer(IServiceScopeFactory serviceScopeFactory,
+                                IOptions<RabbitOptions> options,
+                                ILogger<RabbitMQConsumer> logger)
         {
             _logger = logger;
             _options = options.Value;
             _serviceScopeFactory = serviceScopeFactory;
         }
 
-        public void Init()
+        public void Consume()
         {
             BotMessagesConsumer();
         }

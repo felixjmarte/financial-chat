@@ -1,13 +1,12 @@
-﻿using System;
-using System.Text;
-using Microsoft.Extensions.Configuration;
+﻿using System.Text;
+using FinancialChat.Application.Common.Interfaces;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
-namespace FinancialChat.Application.MessageBroker;
+namespace FinancialChat.Infrastructure.MessageBroker;
 
-public class RabbitMQProducer : IMessageProducer
+public class RabbitMQProducer : IMessageBrokerProducer
 {
     private readonly RabbitOptions _options;
     public RabbitMQProducer(IOptions<RabbitOptions> options)
@@ -15,7 +14,7 @@ public class RabbitMQProducer : IMessageProducer
         _options = options.Value;
     }
 
-    public void SendMessage<T>(T message)
+    public void Publish<T>(T message)
     {
         var factory = new ConnectionFactory {
             HostName = _options.HostName,

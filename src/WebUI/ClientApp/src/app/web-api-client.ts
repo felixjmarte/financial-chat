@@ -87,8 +87,8 @@ export class ChatMessagesClient implements IChatMessagesClient {
 }
 
 export interface IChatRoomsClient {
-    get(): Observable<ChatRoomsVm[]>;
-    get2(chatRoomCode: string | null): Observable<ChatRoomsVm[]>;
+    get(): Observable<ChatRoomVm>;
+    get2(chatRoomCode: string | null): Observable<ChatRoomVm>;
 }
 
 @Injectable({
@@ -104,7 +104,7 @@ export class ChatRoomsClient implements IChatRoomsClient {
         this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
     }
 
-    get(): Observable<ChatRoomsVm[]> {
+    get(): Observable<ChatRoomVm> {
         let url_ = this.baseUrl + "/api/ChatRooms";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -123,14 +123,14 @@ export class ChatRoomsClient implements IChatRoomsClient {
                 try {
                     return this.processGet(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ChatRoomsVm[]>;
+                    return _observableThrow(e) as any as Observable<ChatRoomVm>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ChatRoomsVm[]>;
+                return _observableThrow(response_) as any as Observable<ChatRoomVm>;
         }));
     }
 
-    protected processGet(response: HttpResponseBase): Observable<ChatRoomsVm[]> {
+    protected processGet(response: HttpResponseBase): Observable<ChatRoomVm> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -141,14 +141,7 @@ export class ChatRoomsClient implements IChatRoomsClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ChatRoomsVm.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = ChatRoomVm.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -159,7 +152,7 @@ export class ChatRoomsClient implements IChatRoomsClient {
         return _observableOf(null as any);
     }
 
-    get2(chatRoomCode: string | null): Observable<ChatRoomsVm[]> {
+    get2(chatRoomCode: string | null): Observable<ChatRoomVm> {
         let url_ = this.baseUrl + "/api/ChatRooms/{chatRoomCode}";
         if (chatRoomCode === undefined || chatRoomCode === null)
             throw new Error("The parameter 'chatRoomCode' must be defined.");
@@ -181,14 +174,14 @@ export class ChatRoomsClient implements IChatRoomsClient {
                 try {
                     return this.processGet2(response_ as any);
                 } catch (e) {
-                    return _observableThrow(e) as any as Observable<ChatRoomsVm[]>;
+                    return _observableThrow(e) as any as Observable<ChatRoomVm>;
                 }
             } else
-                return _observableThrow(response_) as any as Observable<ChatRoomsVm[]>;
+                return _observableThrow(response_) as any as Observable<ChatRoomVm>;
         }));
     }
 
-    protected processGet2(response: HttpResponseBase): Observable<ChatRoomsVm[]> {
+    protected processGet2(response: HttpResponseBase): Observable<ChatRoomVm> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -199,14 +192,7 @@ export class ChatRoomsClient implements IChatRoomsClient {
             return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            if (Array.isArray(resultData200)) {
-                result200 = [] as any;
-                for (let item of resultData200)
-                    result200!.push(ChatRoomsVm.fromJS(item));
-            }
-            else {
-                result200 = <any>null;
-            }
+            result200 = ChatRoomVm.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -258,13 +244,57 @@ export interface ISendChatMessageCommand {
     message?: string | undefined;
 }
 
-export class ChatRoomsVm implements IChatRoomsVm {
+export class ChatRoomVm implements IChatRoomVm {
+    chatRooms?: ChatRoomDto[];
+
+    constructor(data?: IChatRoomVm) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            if (Array.isArray(_data["chatRooms"])) {
+                this.chatRooms = [] as any;
+                for (let item of _data["chatRooms"])
+                    this.chatRooms!.push(ChatRoomDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ChatRoomVm {
+        data = typeof data === 'object' ? data : {};
+        let result = new ChatRoomVm();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.chatRooms)) {
+            data["chatRooms"] = [];
+            for (let item of this.chatRooms)
+                data["chatRooms"].push(item.toJSON());
+        }
+        return data;
+    }
+}
+
+export interface IChatRoomVm {
+    chatRooms?: ChatRoomDto[];
+}
+
+export class ChatRoomDto implements IChatRoomDto {
     name?: string | undefined;
     code?: string | undefined;
     global?: boolean;
     messages?: ChatMessageDto[];
 
-    constructor(data?: IChatRoomsVm) {
+    constructor(data?: IChatRoomDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -286,9 +316,9 @@ export class ChatRoomsVm implements IChatRoomsVm {
         }
     }
 
-    static fromJS(data: any): ChatRoomsVm {
+    static fromJS(data: any): ChatRoomDto {
         data = typeof data === 'object' ? data : {};
-        let result = new ChatRoomsVm();
+        let result = new ChatRoomDto();
         result.init(data);
         return result;
     }
@@ -307,7 +337,7 @@ export class ChatRoomsVm implements IChatRoomsVm {
     }
 }
 
-export interface IChatRoomsVm {
+export interface IChatRoomDto {
     name?: string | undefined;
     code?: string | undefined;
     global?: boolean;
@@ -315,7 +345,6 @@ export interface IChatRoomsVm {
 }
 
 export class ChatMessageDto implements IChatMessageDto {
-    id?: number;
     message?: string | undefined;
     userId?: string | undefined;
     created?: Date;
@@ -332,7 +361,6 @@ export class ChatMessageDto implements IChatMessageDto {
 
     init(_data?: any) {
         if (_data) {
-            this.id = _data["id"];
             this.message = _data["message"];
             this.userId = _data["userId"];
             this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
@@ -349,7 +377,6 @@ export class ChatMessageDto implements IChatMessageDto {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
         data["message"] = this.message;
         data["userId"] = this.userId;
         data["created"] = this.created ? this.created.toISOString() : <any>undefined;
@@ -359,7 +386,6 @@ export class ChatMessageDto implements IChatMessageDto {
 }
 
 export interface IChatMessageDto {
-    id?: number;
     message?: string | undefined;
     userId?: string | undefined;
     created?: Date;

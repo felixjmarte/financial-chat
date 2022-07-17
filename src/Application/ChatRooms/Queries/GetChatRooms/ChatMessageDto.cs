@@ -5,8 +5,6 @@ namespace FinancialChat.Application.ChatRooms.Queries.GetChatRooms;
 
 public class ChatMessageDto : IMapFrom<ChatMessage>
 {
-    public int Id { get; set; }
-
     public string? Message { get; set; }
 
     public string? UserId { get; set; }

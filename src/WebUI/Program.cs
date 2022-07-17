@@ -1,4 +1,5 @@
-using FinancialChat.Application.MessageBroker;
+using FinancialChat.Application.Common.Interfaces;
+using FinancialChat.Infrastructure.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 using FinancialChat.WebUI.Hubs;
 
@@ -7,13 +8,19 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.Services.AddWebUIServices();
+builder.Services.AddWebUIServices(builder.Configuration);
 builder.Services.AddSignalR(options =>
 {
     options.EnableDetailedErrors = true;
 });
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var messageConsumer = scope.ServiceProvider.GetRequiredService<IMessageBrokerConsumer>();
+    messageConsumer.Consume();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -59,12 +66,6 @@ app.MapRazorPages();
 app.MapHub<ChatHub>("/chathub");
 
 app.MapFallbackToFile("index.html"); ;
-
-using (var scope = app.Services.CreateScope())
-{
-    var messageConsumer = scope.ServiceProvider.GetRequiredService<IMessageConsumer>();
-    messageConsumer.Init();
-}
 
 app.Run();
 

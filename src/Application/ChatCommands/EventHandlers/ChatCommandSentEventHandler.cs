@@ -1,4 +1,4 @@
-﻿using FinancialChat.Application.MessageBroker;
+﻿using FinancialChat.Application.Common.Interfaces;
 using FinancialChat.Domain.Events;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -8,9 +8,9 @@ namespace FinancialChat.Application.ChatCommands.EventHandlers;
 public class ChatCommandSentEventHandler : INotificationHandler<ChatCommandSentEvent>
 {
     private readonly ILogger<ChatCommandSentEventHandler> _logger;
-    private readonly IMessageProducer _publisher;
+    private readonly IMessageBrokerProducer _publisher;
 
-    public ChatCommandSentEventHandler(ILogger<ChatCommandSentEventHandler> logger, IMessageProducer publisher)
+    public ChatCommandSentEventHandler(ILogger<ChatCommandSentEventHandler> logger, IMessageBrokerProducer publisher)
     {
         _logger = logger;
         _publisher = publisher;
@@ -20,7 +20,7 @@ public class ChatCommandSentEventHandler : INotificationHandler<ChatCommandSentE
     {
         _logger.LogInformation("FinancialChat Domain Event: {DomainEvent}", notification.GetType().Name);
 
-        _publisher.SendMessage(new
+        _publisher.Publish(new
         {
             UserId = notification.ChatCommand?.UserId,
             ChatRoomCode = notification.ChatCommand?.ChatRoom?.Code,

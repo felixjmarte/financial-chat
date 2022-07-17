@@ -9,8 +9,9 @@ namespace FinancialChat.Application.ChatMessages.Commands.SendChatMessages;
 public record SendChatMessageCommand : IRequest<int>
 {
     public string? ChatRoomCode { get; init; }
-
     public string? Message { get; init; }
+    internal string? UserId { get; init; }
+    internal bool IgnoreCommand { get; init; }
 }
 
 public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageCommand, int>
@@ -27,7 +28,7 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
 
     public async Task<int> Handle(SendChatMessageCommand request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(request.Message))
+        if (string.IsNullOrEmpty(request.Message) || string.IsNullOrEmpty(request.ChatRoomCode))
         {
             throw new ValidationException();
         }
@@ -38,45 +39,50 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
         {
             throw new NotFoundException(nameof(ChatRoom), request.ChatRoomCode!);
         }
-
-
-        var isCommand = request.Message.Split(' ').First().StartsWith("/stock=");
-
-        if (isCommand)
+        else if (IsCommand(request))
         {
-            var command = new ChatCommand
-            {
-                ChatRoom = chatRoom,
-                ChatRoomId = chatRoom.Id,
-                Name = request.Message.Split('=').First().Trim(),
-                Param = request.Message.Split('=').Last().Trim(),
-                UserId = _currentUserService.UserId,
-            };
-
-            command.AddDomainEvent(new ChatCommandSentEvent(command));
-
-            _context.ChatCommands.Add(command);
-
-            await _context.SaveChangesAsync(cancellationToken);
-
-            return 0;
+            return await HandlerAsCommand(request, chatRoom, cancellationToken);
         }
-        else
+
+
+        var message = new ChatMessage
         {
-            var message = new ChatMessage
-            {
-                ChatRoomId = chatRoom.Id,
-                Message = request.Message,
-                UserId = _currentUserService.UserId
-            };
+            ChatRoomId = chatRoom.Id,
+            Message = request.Message,
+            UserId = request.UserId ?? _currentUserService.UserId
+        };
 
-            message.AddDomainEvent(new ChatMessageSentEvent(message));
+        message.AddDomainEvent(new ChatMessageSentEvent(message));
 
-            _context.ChatMessages.Add(message);
+        _context.ChatMessages.Add(message);
 
-            await _context.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
-            return message.Id;
-        }
+        return message.Id;
+    }
+
+    private bool IsCommand(SendChatMessageCommand request)
+    {
+        return !request.IgnoreCommand && request.Message!.Split(' ').First().StartsWith("/stock=");
+    }
+
+    private async Task<int> HandlerAsCommand(SendChatMessageCommand request, ChatRoom chatRoom, CancellationToken cancellationToken)
+    {
+        var command = new ChatCommand
+        {
+            ChatRoom = chatRoom,
+            ChatRoomId = chatRoom.Id,
+            Name = request.Message!.Split('=').First().Trim(),
+            Param = request.Message!.Split('=').Last().Trim(),
+            UserId = _currentUserService.UserId,
+        };
+
+        command.AddDomainEvent(new ChatCommandSentEvent(command));
+
+        _context.ChatCommands.Add(command);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return 0;
     }
 }

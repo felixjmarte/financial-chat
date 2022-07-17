@@ -1,5 +1,5 @@
 ﻿using FinancialChat.Application.Common.Interfaces;
-using FinancialChat.Application.MessageBroker;
+using FinancialChat.Infrastructure.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 using FinancialChat.WebUI.Filters;
 using FinancialChat.WebUI.Services;
@@ -12,10 +12,9 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class ConfigureServices
 {
-    public static IServiceCollection AddWebUIServices(this IServiceCollection services)
+    public static IServiceCollection AddWebUIServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
-
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
 
         services.AddHttpContextAccessor();

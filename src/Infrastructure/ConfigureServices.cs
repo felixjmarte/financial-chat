@@ -1,5 +1,6 @@
 ﻿using FinancialChat.Application.Common.Interfaces;
 using FinancialChat.Infrastructure.Identity;
+using FinancialChat.Infrastructure.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 using FinancialChat.Infrastructure.Persistence.Interceptors;
 using FinancialChat.Infrastructure.Services;
@@ -14,6 +15,10 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<RabbitOptions>(configuration.GetSection(RabbitOptions.KEY));
+        services.AddSingleton<IMessageBrokerProducer, RabbitMQProducer>();
+        services.AddSingleton<IMessageBrokerConsumer, RabbitMQConsumer>();
+
         services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
@@ -27,9 +32,8 @@ public static class ConfigureServices
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
                     builder => builder.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
         }
-
+     
         services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
-
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services

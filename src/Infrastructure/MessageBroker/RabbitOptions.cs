@@ -1,5 +1,5 @@
 ﻿using System;
-namespace FinancialChat.Application.MessageBroker;
+namespace FinancialChat.Infrastructure.MessageBroker;
 
 public class RabbitOptions
 {

@@ -14,6 +14,7 @@
         <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.5" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -22,8 +23,11 @@
 
     <ItemGroup>
       <None Remove="Persistence\Configurations\" />
+      <None Remove="MessageBroker\" />
+      <None Remove="RabbitMQ.Client" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Persistence\Configurations\" />
+      <Folder Include="MessageBroker\" />
     </ItemGroup>
 </Project>

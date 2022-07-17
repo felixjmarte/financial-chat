@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="NUnit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.7" />
+    <PackageReference Include="Moq" Version="4.18.1" />
+    <PackageReference Include="FluentAssertions" Version="6.7.0" />
+    <PackageReference Include="Respawn" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ChatRoom\" />
+    <None Remove="Microsoft.AspNetCore.Mvc.Testing" />
+    <None Remove="Moq" />
+    <None Remove="FluentAssertions" />
+    <None Remove="Respawn" />
+    <None Remove="ChatRooms\Queries\" />
+    <None Remove="ChatRooms\Queries\GetChatRooms\" />
+    <None Remove="ChatMessages\" />
+    <None Remove="ChatMessages\Commands\" />
+    <None Remove="ChatMessages\Commands\SendChatMessage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ChatRooms\" />
+    <Folder Include="ChatRooms\Queries\" />
+    <Folder Include="ChatRooms\Queries\GetChatRooms\" />
+    <Folder Include="ChatMessages\" />
+    <Folder Include="ChatMessages\Commands\" />
+    <Folder Include="ChatMessages\Commands\SendChatMessage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\WebUI\WebUI.csproj" />
+  </ItemGroup>
+</Project>

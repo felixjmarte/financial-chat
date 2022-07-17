@@ -11,8 +11,6 @@ public class ChatRoomDto : IMapFrom<ChatRoom>
         Messages = new List<ChatMessageDto>();
     }
 
-    public int Id { get; set; }
-
     public string? Name { get; set; }
 
     public string? Code { get; set; }
@@ -27,4 +25,3 @@ public class ChatRoomDto : IMapFrom<ChatRoom>
             .ForMember(d => d.Messages, opt => opt.MapFrom(s => s.Messages.OrderByDescending(o => o.Created).Take(ChatRoom.MESSAGES_LIMIT)));
     }
 }
-

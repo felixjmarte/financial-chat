@@ -36,7 +36,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     },
     "/api/ChatRooms": {
@@ -51,10 +56,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatRoomsVm"
-                  }
+                  "$ref": "#/components/schemas/ChatRoomVm"
                 }
               }
             }
@@ -91,10 +93,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChatRoomsVm"
-                  }
+                  "$ref": "#/components/schemas/ChatRoomVm"
                 }
               }
             }
@@ -124,7 +123,19 @@
           }
         }
       },
-      "ChatRoomsVm": {
+      "ChatRoomVm": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "chatRooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatRoomDto"
+            }
+          }
+        }
+      },
+      "ChatRoomDto": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
@@ -151,10 +162,6 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "message": {
             "type": "string",
             "nullable": true

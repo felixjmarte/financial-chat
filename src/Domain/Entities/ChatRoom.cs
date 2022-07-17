@@ -12,6 +12,9 @@ public class ChatRoom : BaseAuditableEntity
     public IList<ChatRoomUser> Users { get; private set; } = new List<ChatRoomUser>();
 
     [NotMapped]
+    public const string DEFAULT_CODE = "default";
+
+    [NotMapped]
     public const int MESSAGES_LIMIT = 50;
 }
 

@@ -3,7 +3,7 @@ import { AuthorizeService, IUser } from "../../api-authorization/authorize.servi
 import { Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
 import {
-  ChatRoomsClient, ChatRoomsVm,
+  ChatRoomsClient, ChatRoomVm, ChatRoomDto,
   ChatMessagesClient, ChatMessageDto, SendChatMessageCommand
 } from '../web-api-client';
 import { ChatService } from './chat.service'; 
@@ -15,8 +15,8 @@ import { ChatService } from './chat.service';
 })
 export class ChatComponent implements OnInit {
   public currentUser?: any;
-  roomList: ChatRoomsVm[];
-  currentRoom: ChatRoomsVm;
+  roomList: ChatRoomVm;
+  currentRoom: ChatRoomDto;
   newMessage = '';
 
   constructor(
@@ -40,8 +40,8 @@ export class ChatComponent implements OnInit {
 
   getRooms() {
     this.roomsClient.get().subscribe(
-      result => {
-        result.forEach(r => {
+      (result: ChatRoomVm) => {
+        result.chatRooms.forEach(r => {
           r.messages = this.orderByDateDesc(r.messages)
           if (!this.currentRoom || this.currentRoom.code == r.code) {
             this.currentRoom = r;
