@@ -45,22 +45,15 @@ FinanChat requires .NET 6, Angular +13, and RabbitMQ Server (***docker version r
 ##### Configuration files
  Before running projects, you should set up your environment configurations.
 
-- **WebUI**
-  ***"src/WebUI/appsettings.Production.json"*** serve as a template for final configuration file, you should copy its content into ***"src/WebUI/appsettings.Development.json"*** and replace all [fields] with you environment values.
-- **Worker**
-  ***"src/Worker/appsettings.Production.json"*** serve as a template for final configuration file, you should copy its content into ***"src/Worker/appsettings.Development.json"*** and replace all [fields] with you environment values.
-- **BOT**
-    At startup, a default bot user is created, you should use these credentials:
-    "Bot": { "UserName": "bot@localhost", "Password": "Bot#2022!" } 
-- **IntegrationTests**
-  ***"test/Application.IntegrationTests/appsettings.tests.json"*** serve as a template for final configuration file, you should replace all [fields] with you environment values.
+**WebUI**:
+"src/WebUI/appsettings.Production.json" serve as a template for final configuration file, you should copy its content into "src/WebUI/appsettings.Development.json" and replace all [fields] with you environment values.
 
-***
-## License
+**Worker**:
+"src/Worker/appsettings.Production.json" serve as a template for final configuration file, you should copy its content into "src/Worker/appsettings.Development.json" and replace all [fields] with you environment values.
 
-MIT
+**BOT**:
+At startup, a default bot user is created, you should use these credentials:
+"Bot": { "UserName": "bot@localhost", "Password": "Bot#2022!" } 
 
-**Free Software**
-
-[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
-   [Angular]: <http://angularjs.org>
+**IntegrationTests**:
+"test/Application.IntegrationTests/appsettings.tests.json" serve as a template for final configuration file, you should replace all [fields] with you environment values.
