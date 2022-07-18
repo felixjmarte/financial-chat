@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using AutoMapper;
-using FinancialChat.Application.ChatRooms.Queries.GetChatRooms;
+using FinancialChat.Application.Common.DTO;
 using FinancialChat.Application.Common.Mappings;
 using FinancialChat.Domain.Entities;
 

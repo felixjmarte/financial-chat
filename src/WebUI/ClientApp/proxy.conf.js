@@ -19,10 +19,8 @@ const PROXY_CONFIG = [
       "/ChatHub",
    ],
     target: target,
+    ws: true,
     secure: false,
-    headers: {
-      Connection: 'Keep-Alive'
-    }
   }
 ]
 

@@ -8,7 +8,7 @@
                     </div>
                 </div>
                 <div class="inbox_chat">
-                    <div class="channels" *ngFor="let room of roomList.chatRooms">
+                    <div class="channels" *ngFor="let room of roomList?.chatRooms || []">
                         <div class="chat_list">
                             <div class="chat_people" (click)="setRoom(room)">
                                 <div class="chat_ib">
@@ -41,8 +41,8 @@
                 <div class="msg_header">
                     <p class="text-right text-muted">{{currentRoom.name}}</p>
                 </div>
-                <div class="msg_history">
-                    <li class="message" *ngFor="let message of currentRoom.messages">
+                <div #messagesContainer class="msg_history">
+                    <li class="message" *ngFor="let message of currentRoom?.messages || []">
                         <div *ngIf="
                           message.userId !== currentUser?.sub;
                           then incoming_msg;

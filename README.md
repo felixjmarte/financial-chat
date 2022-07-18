@@ -14,6 +14,7 @@ Concepts:
 Technologies:
 - .NET 6
 - Angular 13
+- SignalR
 - EF Core
 - RabbitMQ
 - MediatR

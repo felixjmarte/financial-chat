@@ -2,9 +2,9 @@
 using FinancialChat.Application.Common.Mappings;
 using FinancialChat.Domain.Entities;
 
-namespace FinancialChat.Application.ChatRooms.Queries.GetChatRooms;
+namespace FinancialChat.Application.Common.DTO;
 
-public class ChatRoomDto : IMapFrom<ChatRoom>
+public class ChatRoomDto : BaseDto, IMapFrom<ChatRoom>
 {
     public ChatRoomDto()
     {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FinancialChat.Application.Common.Interfaces;
+using FinancialChat.Application.Common.DTO;
 using FinancialChat.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

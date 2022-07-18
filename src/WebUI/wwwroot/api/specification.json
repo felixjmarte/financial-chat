@@ -136,49 +136,72 @@
         }
       },
       "ChatRoomDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseDto"
           },
-          "code": {
-            "type": "string",
-            "nullable": true
-          },
-          "global": {
-            "type": "boolean"
-          },
-          "messages": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChatMessageDto"
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": "string",
+                "nullable": true
+              },
+              "code": {
+                "type": "string",
+                "nullable": true
+              },
+              "global": {
+                "type": "boolean"
+              },
+              "messages": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChatMessageDto"
+                }
+              }
             }
           }
-        }
+        ]
       },
       "ChatMessageDto": {
-        "type": "object",
-        "additionalProperties": false,
-        "properties": {
-          "message": {
-            "type": "string",
-            "nullable": true
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BaseDto"
           },
-          "userId": {
-            "type": "string",
-            "nullable": true
-          },
-          "created": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdBy": {
-            "type": "string",
-            "nullable": true
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "chatRoomCode": {
+                "type": "string",
+                "nullable": true
+              },
+              "message": {
+                "type": "string",
+                "nullable": true
+              },
+              "userId": {
+                "type": "string",
+                "nullable": true
+              },
+              "created": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "createdBy": {
+                "type": "string",
+                "nullable": true
+              }
+            }
           }
-        }
+        ]
+      },
+      "BaseDto": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false
       }
     },
     "securitySchemes": {

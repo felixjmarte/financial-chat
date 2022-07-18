@@ -10,7 +10,7 @@ public record SendChatMessageCommand : IRequest<int>
 {
     public string? ChatRoomCode { get; init; }
     public string? Message { get; init; }
-    internal string? UserId { get; init; }
+    public string? UserId { get; init; }
     internal bool IgnoreCommand { get; init; }
 }
 
@@ -74,7 +74,7 @@ public class SendChatMessageCommandHandler : IRequestHandler<SendChatMessageComm
             ChatRoomId = chatRoom.Id,
             Name = request.Message!.Split('=').First().Trim(),
             Param = request.Message!.Split('=').Last().Trim(),
-            UserId = _currentUserService.UserId,
+            UserId = request.UserId ?? _currentUserService.UserId,
         };
 
         command.AddDomainEvent(new ChatCommandSentEvent(command));

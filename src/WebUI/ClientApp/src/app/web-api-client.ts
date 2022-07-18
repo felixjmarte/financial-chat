@@ -288,13 +288,9 @@ export interface IChatRoomVm {
     chatRooms?: ChatRoomDto[];
 }
 
-export class ChatRoomDto implements IChatRoomDto {
-    name?: string | undefined;
-    code?: string | undefined;
-    global?: boolean;
-    messages?: ChatMessageDto[];
+export abstract class BaseDto implements IBaseDto {
 
-    constructor(data?: IChatRoomDto) {
+    constructor(data?: IBaseDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -304,6 +300,34 @@ export class ChatRoomDto implements IChatRoomDto {
     }
 
     init(_data?: any) {
+    }
+
+    static fromJS(data: any): BaseDto {
+        data = typeof data === 'object' ? data : {};
+        throw new Error("The abstract class 'BaseDto' cannot be instantiated.");
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data;
+    }
+}
+
+export interface IBaseDto {
+}
+
+export class ChatRoomDto extends BaseDto implements IChatRoomDto {
+    name?: string | undefined;
+    code?: string | undefined;
+    global?: boolean;
+    messages?: ChatMessageDto[];
+
+    constructor(data?: IChatRoomDto) {
+        super(data);
+    }
+
+    override init(_data?: any) {
+        super.init(_data);
         if (_data) {
             this.name = _data["name"];
             this.code = _data["code"];
@@ -316,14 +340,14 @@ export class ChatRoomDto implements IChatRoomDto {
         }
     }
 
-    static fromJS(data: any): ChatRoomDto {
+    static override fromJS(data: any): ChatRoomDto {
         data = typeof data === 'object' ? data : {};
         let result = new ChatRoomDto();
         result.init(data);
         return result;
     }
 
-    toJSON(data?: any) {
+    override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["code"] = this.code;
@@ -333,34 +357,33 @@ export class ChatRoomDto implements IChatRoomDto {
             for (let item of this.messages)
                 data["messages"].push(item.toJSON());
         }
+        super.toJSON(data);
         return data;
     }
 }
 
-export interface IChatRoomDto {
+export interface IChatRoomDto extends IBaseDto {
     name?: string | undefined;
     code?: string | undefined;
     global?: boolean;
     messages?: ChatMessageDto[];
 }
 
-export class ChatMessageDto implements IChatMessageDto {
+export class ChatMessageDto extends BaseDto implements IChatMessageDto {
+    chatRoomCode?: string | undefined;
     message?: string | undefined;
     userId?: string | undefined;
     created?: Date;
     createdBy?: string | undefined;
 
     constructor(data?: IChatMessageDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
+        super(data);
     }
 
-    init(_data?: any) {
+    override init(_data?: any) {
+        super.init(_data);
         if (_data) {
+            this.chatRoomCode = _data["chatRoomCode"];
             this.message = _data["message"];
             this.userId = _data["userId"];
             this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
@@ -368,24 +391,27 @@ export class ChatMessageDto implements IChatMessageDto {
         }
     }
 
-    static fromJS(data: any): ChatMessageDto {
+    static override fromJS(data: any): ChatMessageDto {
         data = typeof data === 'object' ? data : {};
         let result = new ChatMessageDto();
         result.init(data);
         return result;
     }
 
-    toJSON(data?: any) {
+    override toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["chatRoomCode"] = this.chatRoomCode;
         data["message"] = this.message;
         data["userId"] = this.userId;
         data["created"] = this.created ? this.created.toISOString() : <any>undefined;
         data["createdBy"] = this.createdBy;
+        super.toJSON(data);
         return data;
     }
 }
 
-export interface IChatMessageDto {
+export interface IChatMessageDto extends IBaseDto {
+    chatRoomCode?: string | undefined;
     message?: string | undefined;
     userId?: string | undefined;
     created?: Date;

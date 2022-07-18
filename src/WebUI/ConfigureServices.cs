@@ -1,4 +1,5 @@
-﻿using FinancialChat.Application.Common.Interfaces;
+﻿using FinancialChat.Application.Common.DTO;
+using FinancialChat.Application.Common.Interfaces;
 using FinancialChat.Infrastructure.MessageBroker;
 using FinancialChat.Infrastructure.Persistence;
 using FinancialChat.WebUI.Filters;
@@ -16,6 +17,7 @@ public static class ConfigureServices
     {
         services.AddDatabaseDeveloperPageExceptionFilter();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<IClientAppNotifier<BaseDto>, NotifierService>();
 
         services.AddHttpContextAccessor();
 

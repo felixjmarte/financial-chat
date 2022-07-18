@@ -1,4 +1,7 @@
-﻿namespace FinancialChat.Application.ChatRooms.Queries.GetChatRooms;
+﻿
+using FinancialChat.Application.Common.DTO;
+
+namespace FinancialChat.Application.ChatRooms.Queries.GetChatRooms;
 
 public class ChatRoomVm
 {

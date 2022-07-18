@@ -42,6 +42,7 @@
       <None Remove="ChatCommand\EventHandlers\" />
       <None Remove="ChatMessages\EventHandlers\" />
       <None Remove="Services\" />
+      <None Remove="Common\Dto\" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ChatRooms\" />
@@ -54,5 +55,6 @@
       <Folder Include="ChatCommands\EventHandlers\" />
       <Folder Include="ChatMessages\EventHandlers\" />
       <Folder Include="Services\" />
+      <Folder Include="Common\Dto\" />
     </ItemGroup>
 </Project>

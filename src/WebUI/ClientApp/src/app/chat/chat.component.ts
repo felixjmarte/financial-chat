@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { AuthorizeService, IUser } from "../../api-authorization/authorize.service";
 import { Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class ChatComponent implements OnInit {
   roomList: ChatRoomVm;
   currentRoom: ChatRoomDto;
   newMessage = '';
+  @ViewChild('messagesContainer') messagesContainer: ElementRef;
 
   constructor(
     private authorizeService: AuthorizeService,
@@ -34,9 +35,22 @@ export class ChatComponent implements OnInit {
         this.currentUser = result;
       }
     )
-    setInterval(() => this.getRooms(), 500);
+    this.subscribeToEvents();
+    this.getRooms();
   }
 
+  ngAfterViewInit() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    setTimeout(() => {
+      try {
+        this.messagesContainer.nativeElement.scrollTop = this.messagesContainer.nativeElement.scrollHeight;
+      } catch (err) { console.log('...'); }
+    }, 1000);
+    
+  }
 
   getRooms() {
     this.roomsClient.get().subscribe(
@@ -48,6 +62,7 @@ export class ChatComponent implements OnInit {
           }
         });
         this.roomList = result;
+        this.scrollToBottom();
       },
       error => console.error(error)
     );
@@ -56,6 +71,7 @@ export class ChatComponent implements OnInit {
   setRoom(room) {
     if (!this.currentRoom || this.currentRoom.code != room.code) {
       this.currentRoom = room;
+      this.scrollToBottom();
     }
   }
 
@@ -71,14 +87,7 @@ export class ChatComponent implements OnInit {
     }
 
     try {
-      this.messagesClient.send({ chatRoomCode: this.currentRoom.code, message: this.newMessage } as SendChatMessageCommand).subscribe(
-        result => {
-          console.log(result);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+      this.chatService.sendMessage({ chatRoomCode: this.currentRoom.code, message: this.newMessage } as ChatMessageDto);
       this.newMessage = '';
     } catch (err) {
       console.log(err);
@@ -88,7 +97,12 @@ export class ChatComponent implements OnInit {
   private subscribeToEvents(): void {
     this.chatService.messageReceived.subscribe((message: ChatMessageDto) => {
       this._ngZone.run(() => {
-        this.currentRoom.messages.push(message);
+        message.created = new Date(message.created);
+        var room = this.roomList.chatRooms.filter(r => r.code == message.chatRoomCode);
+        if (room && room.length == 1) {
+          room[0].messages.push(message);
+          this.scrollToBottom();
+        }
       });
     });
   }  

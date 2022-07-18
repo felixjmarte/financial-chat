@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { AuthorizeService, IUser } from "../../api-authorization/authorize.service";
 import { LogLevel, HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 import { ChatMessageDto } from '../web-api-client';
 
@@ -7,26 +8,26 @@ export class ChatService {
   messageReceived = new EventEmitter<ChatMessageDto>();
   connectionEstablished = new EventEmitter<Boolean>();
 
-  private _skip = true;
   private connectionIsEstablished = false;
   private _hubConnection: HubConnection;
 
-  constructor() {
-    if (this._skip) {
-      return;
-    }
-    //this.createConnection();
-    //this.registerOnServerEvents();
-    //this.startConnection();
+  constructor(private authorizeService: AuthorizeService) {
+    this.authorizeService.getAccessToken().subscribe((accessToken) => {
+      if (accessToken) {
+        this.createConnection(accessToken);
+        this.registerOnServerEvents();
+        this.startConnection();
+      }
+    })
   }
 
-  sendMessage(message: any) {
-    this._hubConnection.invoke('NewMessage', message);
+  sendMessage(message: ChatMessageDto) {
+    this._hubConnection.invoke('SendMessage', message);
   }
 
-  private createConnection() {
+  private createConnection(accessToken) {
     this._hubConnection = new HubConnectionBuilder()
-      .withUrl('/chathub')
+      .withUrl('/ChatHub', { accessTokenFactory: () => accessToken })
       .configureLogging(LogLevel.Information)
       .build();
   }
@@ -36,17 +37,15 @@ export class ChatService {
       .start()
       .then(() => {
         this.connectionIsEstablished = true;
-        console.log('Hub connection started');
         this.connectionEstablished.emit(true);
       })
       .catch(err => {
-        console.log(`Error while establishing connection, retrying... ${err}`,);
         setTimeout(() => { this.startConnection(); }, 5000);
       });
   }
 
   private registerOnServerEvents(): void {
-    this._hubConnection.on('MessageReceived', (data: any) => {
+    this._hubConnection.on('MessageReceived', (data: ChatMessageDto) => {
       this.messageReceived.emit(data);
     });
   }
