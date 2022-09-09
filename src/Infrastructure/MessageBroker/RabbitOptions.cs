@@ -13,7 +13,7 @@ public class RabbitOptions
 
     public int Port { get; set; } = 5672;
 
-    public string VHost { get; set; } = "/";
+    private string VHost { get; set; } = "/";
 
     public string CommandsQueue { get; set; } = "commands";
     public string BotMessagesQueue { get; set; } = "bot_message";

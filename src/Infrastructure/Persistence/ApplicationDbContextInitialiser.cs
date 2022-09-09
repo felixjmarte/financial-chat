@@ -55,10 +55,15 @@ public class ApplicationDbContextInitialiser
     {
         // Default roles
         var administratorRole = new IdentityRole("Administrator");
-
         if (_roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await _roleManager.CreateAsync(administratorRole);
+        }
+
+        var agentRole = new IdentityRole("Agent");
+        if (_roleManager.Roles.All(r => r.Name != agentRole.Name))
+        {
+            await _roleManager.CreateAsync(agentRole);
         }
 
         var botRole = new IdentityRole("Bot");
@@ -76,7 +81,21 @@ public class ApplicationDbContextInitialiser
             await _userManager.AddToRolesAsync(administratorUser, new[] { administratorRole.Name });
         }
 
-        var botUser = new ApplicationUser { UserName = "bot@localhost", Email = "bot@localhost" };
+        var user1 = new ApplicationUser { UserName = "user1@financhat.com", Email = "user1@financhat.com" };
+        if (_userManager.Users.All(u => u.UserName != user1.UserName))
+        {
+            await _userManager.CreateAsync(user1, "Administrator#2022!");
+            await _userManager.AddToRolesAsync(user1, new[] { agentRole.Name });
+        }
+
+        var user2 = new ApplicationUser { UserName = "user2@financhat.com", Email = "user2@financhat.com" };
+        if (_userManager.Users.All(u => u.UserName != user2.UserName))
+        {
+            await _userManager.CreateAsync(user2, "Administrator#2022!");
+            await _userManager.AddToRolesAsync(user2, new[] { agentRole.Name });
+        }
+
+        var botUser = new ApplicationUser { UserName = "bot@financhat.com", Email = "bot@financhat.com" };
         if (_userManager.Users.All(u => u.UserName != botUser.UserName))
         {
             await _userManager.CreateAsync(botUser, "Bot#2022!");

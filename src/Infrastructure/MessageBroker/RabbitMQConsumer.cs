@@ -41,7 +41,6 @@ namespace FinancialChat.Infrastructure.MessageBroker
                 HostName = _options.HostName,
                 UserName = _options.UserName,
                 Password = _options.Password,
-                VirtualHost = _options.VHost
             };
 
             var connection = factory.CreateConnection();

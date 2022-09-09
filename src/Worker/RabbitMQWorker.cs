@@ -64,8 +64,7 @@ public class RabbitMQWorker : BackgroundService
             Port = _options.Port,
             HostName = _options.HostName,
             UserName = _options.UserName,
-            Password = _options.Password,
-            VirtualHost = _options.VHost
+            Password = _options.Password
         };
         return factory.CreateConnection();
     }
