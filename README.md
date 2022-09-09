@@ -28,7 +28,9 @@ docker run -d --hostname financhat-rabbit --name financhat-rabbit -p 15672:15672
 
 ##### Run FinanChat WebUI and Worker Applications simultaneously
 dotnet restore
+
 dotnet run --project .\src\Worker\Worker.csproj
+
 dotnet run --project .\src\WebUI\WebUI.csproj
 
 ##### Open two browser windows and log in with these users
