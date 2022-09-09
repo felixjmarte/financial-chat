@@ -20,14 +20,18 @@ public class ChatCommandSentEventHandler : INotificationHandler<ChatCommandSentE
     {
         _logger.LogInformation("FinancialChat Domain Event: {DomainEvent}", notification.GetType().Name);
 
-        _publisher.Publish(new
+        Task.Run(() =>
         {
-            UserId = notification.ChatCommand?.UserId,
-            ChatRoomCode = notification.ChatCommand?.ChatRoom?.Code,
-            CommandName = notification.ChatCommand?.Name,
-            CommandArgument = notification.ChatCommand?.Param,
-            PublishDate = DateTime.Now
+            _publisher.Publish(new
+            {
+                UserId = notification.ChatCommand?.UserId,
+                ChatRoomCode = notification.ChatCommand?.ChatRoom?.Code,
+                CommandName = notification.ChatCommand?.Name,
+                CommandArgument = notification.ChatCommand?.Param,
+                PublishDate = DateTime.Now
+            });
         });
+        
 
         return Task.CompletedTask;
     }

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using Duende.IdentityServer.Models;
 using FinancialChat.Application.Common.Exceptions;
 using FinancialChat.Application.Common.Interfaces;
 using FinancialChat.Domain.Events;
@@ -30,7 +31,20 @@ namespace FinancialChat.Infrastructure.MessageBroker
 
         public void Consume()
         {
-            BotMessagesConsumer();
+            Task.Run(() =>
+            {
+                try
+                {
+                    BotMessagesConsumer();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogInformation("Could not publish message to Rabbit MQ. Verify your MQ Server is running and accessible.");
+                    _logger.LogError("RabbitMQConsumer: {DomainEvent}", ex);
+                    Thread.Sleep(10000);
+                    Consume();
+                }
+            });
         }
 
         private void BotMessagesConsumer()
